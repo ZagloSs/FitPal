@@ -40,9 +40,7 @@ public class Register extends AppCompatActivity {
         duration = Toast.LENGTH_LONG;
 
         //Parametros para el if
-        verCorreo = etCorreo.getText().toString();
-        verPass = etPass.getText().toString();
-        verConPass = etConPass.getText().toString();
+
 
 
         //If Verificacion si esta vacio
@@ -50,19 +48,31 @@ public class Register extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Register.this, Login.class);
-                if(verCorreo.matches("")){
-                    Toast.makeText(Register.this, "Porfavor ingresa un correo electronico", duration);
-                    startActivity(intent);
+                verCorreo = etCorreo.getText().toString();
+                verPass = etPass.getText().toString();
+                verConPass = etConPass.getText().toString();
 
-                }else if (verPass.matches("")){
-                    Toast.makeText(Register.this, "Porfavor ingresa una contraseña", duration);
-                    startActivity(intent);
+                if(verCorreo.equals("")){
+                    etCorreo.setError("Porfavor ingresa un correo electrónico");
+                    etCorreo.requestFocus();
 
-                } else if (!verConPass.matches(verPass)) {
-                    Toast.makeText(Register.this, "Las contraseñas tienen que ser iguales", duration);                    startActivity(intent);
-                    startActivity(intent);
+
+                }else if (verPass.equals("")){
+                    etPass.setError("Porfavor introduzca una contraseña");
+                    etPass.requestFocus();
+
+
+                } else if(verConPass.equals("")){
+                    etConPass.setError("Porfavor confirme una contraseña");
+                    etConPass.requestFocus();
+
+                } else if (!verConPass.equals(verPass)) {
+                    etPass.setError("Las contraseñas no coinciden");
+                    etConPass.setError("Las contraseñas no coinciden");
+                    etConPass.requestFocus();
+   ;
                 }else{
+                    Intent intent = new Intent(Register.this, Login.class);
                     Toast toast = Toast.makeText(Register.this, textToast, duration);
                     toast.show();
 
