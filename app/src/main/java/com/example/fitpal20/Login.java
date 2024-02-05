@@ -14,22 +14,39 @@ public class Login extends AppCompatActivity {
     EditText etCorreo, etPass;
     Button btnLogin;
     TextView tvRegister;
+    String verCorreo, verPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etCorreo = (EditText) findViewById(R.id.login_email_editText);
-        etPass = (EditText) findViewById(R.id.login_pass_editText);
-        btnLogin = (Button) findViewById(R.id.login_login_btn);
-        tvRegister = (TextView) findViewById(R.id.login_sinRegistro_textView);
+        etCorreo = findViewById(R.id.login_email_editText);
+        etPass = findViewById(R.id.login_pass_editText);
+        btnLogin = findViewById(R.id.login_login_btn);
+        tvRegister = findViewById(R.id.login_sinRegistro_textView);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login.this, Main.class);
-                startActivity(intent);
+
+                verCorreo = etCorreo.getText().toString();
+                verPass = etPass.getText().toString();
+
+                if(verCorreo.equals("")){
+                    etCorreo.setError("Porfavor, introduzca un correo");
+                    etCorreo.requestFocus();
+                }else if(verPass.equals("")){
+                    etPass.setError("Porfavor introduce una contraseña");
+                    etPass.requestFocus();
+                }else{
+
+                    //Petición a la base de datos y entonces realizar el intent
+                    Intent intent = new Intent(Login.this, Main.class);
+                    startActivity(intent);
+                }
+
+
             }
         });
 
@@ -38,6 +55,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, Register.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 

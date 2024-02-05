@@ -29,11 +29,11 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        btnRegister= (Button) findViewById(R.id.register_register_btn);
-        etCorreo = (EditText) findViewById(R.id.register_email_editText);
-        etPass = (EditText) findViewById(R.id.register_pass_editText);
-        etConPass = (EditText) findViewById(R.id.register_confirmPass_editText);
-        tvLogin = (TextView) findViewById(R.id.register_login_textView);
+        btnRegister= findViewById(R.id.register_register_btn);
+        etCorreo =  findViewById(R.id.register_email_editText);
+        etPass = findViewById(R.id.register_pass_editText);
+        etConPass = findViewById(R.id.register_confirmPass_editText);
+        tvLogin = findViewById(R.id.register_login_textView);
 
         //Parametros para el toast
         textToast = "Te has registrado correctamente";
@@ -85,6 +85,7 @@ public class Register extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Register.this, Login.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
