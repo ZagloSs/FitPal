@@ -1,8 +1,11 @@
 package com.example.fitpal20.rvadapters;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,12 +30,15 @@ public class RutineRecylerViewAdapter extends RecyclerView.Adapter<RutineRecyler
     @NonNull
     @Override
     public RutineRecylerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view =inflater.inflate(R.layout.cv_rutine, parent, false);
+        return new RutineRecylerViewAdapter.MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RutineRecylerViewAdapter.MyViewHolder holder, int position) {
-
+        holder.tvName.setText(RutineModels.get(position).getRutineName());
+        holder.tvDayList.setText(RutineModels.get(position).getDays());
     }
 
     @Override
@@ -42,11 +48,18 @@ public class RutineRecylerViewAdapter extends RecyclerView.Adapter<RutineRecyler
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView tvName, tvDayList;
+        LinearLayout llCheck;
+        ImageView imageCheck;
         CardView cvRutine;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_rutineName);
             tvDayList = itemView.findViewById(R.id.tv_rutineDayList);
+
+            llCheck = itemView.findViewById(R.id.ll_check);
+            imageCheck = itemView.findViewById(R.id.imageCheck);
+
+
             cvRutine = itemView.findViewById(R.id.cardview);
         }
     }
