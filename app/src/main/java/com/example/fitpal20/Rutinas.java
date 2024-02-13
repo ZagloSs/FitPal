@@ -3,6 +3,7 @@ package com.example.fitpal20;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,9 @@ public class Rutinas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_rutinas);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.dark_gray));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.dark_gray));
 
         RecyclerView rv = findViewById(R.id.recylcerViewRutine);
         setRutines();
