@@ -1,6 +1,7 @@
 package com.example.fitpal20;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,10 @@ public class Lobby extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.orange));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.orange));
+
 
         btnLogin = (Button) findViewById(R.id.lobby_login_btn);
         btnRegister = (Button) findViewById(R.id.lobby_register_btn);

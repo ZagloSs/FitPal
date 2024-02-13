@@ -1,6 +1,7 @@
 package com.example.fitpal20;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,9 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.orange));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.orange));
 
         btnRegister= findViewById(R.id.register_register_btn);
         etCorreo =  findViewById(R.id.register_email_editText);
