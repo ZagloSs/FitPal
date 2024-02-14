@@ -6,6 +6,10 @@ android {
     namespace 'com.example.fitpal20'
     compileSdk 33
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "com.example.fitpal20"
         minSdk 24
@@ -37,3 +41,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
+
