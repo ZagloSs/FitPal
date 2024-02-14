@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             }else if(item.getItemId() == R.id.historyBtn) {
                 replaceFragment(new HistoryFragment());
             }else if(item.getItemId() == R.id.profileBtn) {
-
+                replaceFragment(new ProfileFragment());
             }
             return true;
         });

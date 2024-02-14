@@ -20,13 +20,15 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/dark_gray"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@color/orange"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/dark_gray"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemIconTint="@color/orange"
-        app:itemIconSize="35dp"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/bottom_nav_menu"/>
+        app:itemActiveIndicatorStyle="@color/orange"
+        app:itemRippleColor="@color/orange"
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
