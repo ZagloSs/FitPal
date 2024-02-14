@@ -37,9 +37,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     @Override
     public void onBindViewHolder(@NonNull HistoryRecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.tvName.setText(HistoryModels.get(position).getExName());
-        holder.tvSets.setText(HistoryModels.get(position).getSets());
-        holder.tvReps.setText(HistoryModels.get(position).getReps());
-        holder.tvKg.setText(String.valueOf(HistoryModels.get(position).getKg()));
+        holder.tvSets.setText("S: " + String.valueOf(HistoryModels.get(position).getSets()));
+        holder.tvReps.setText("R: " + String.valueOf(HistoryModels.get(position).getReps()));
+        holder.tvKg.setText("KG: " + String.valueOf(HistoryModels.get(position).getKg()));
     }
 
     @Override

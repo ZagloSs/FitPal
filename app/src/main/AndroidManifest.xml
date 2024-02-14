@@ -19,6 +19,10 @@
         <activity
             android:name=".Main"
             android:exported="false" />
+
+        <activity
+            android:name=".History"
+            android:exported="false"/>
         <activity
             android:name=".SplashScreen"
             android:exported="false" />

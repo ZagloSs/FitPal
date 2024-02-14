@@ -46,7 +46,7 @@ public class Login extends AppCompatActivity {
                 }else{
 
                     //Petición a la base de datos y entonces realizar el intent
-                    Intent intent = new Intent(Login.this, Rutinas.class);
+                    Intent intent = new Intent(Login.this, History.class);
                     startActivity(intent);
                 }
 
