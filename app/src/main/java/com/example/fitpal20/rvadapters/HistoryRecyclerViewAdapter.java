@@ -54,6 +54,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_nameEx);
+            tvName = itemView.findViewById(R.id.tv_nameEx);
+            tvName = itemView.findViewById(R.id.tv_nameEx);
+            tvName = itemView.findViewById(R.id.tv_nameEx);
             tvSets = itemView.findViewById(R.id.tv_sets);
             tvReps = itemView.findViewById(R.id.tv_reps);
             tvKg = itemView.findViewById(R.id.tv_peso);
