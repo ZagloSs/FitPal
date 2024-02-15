@@ -13,17 +13,17 @@ public class AddDay extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_day);
+        setContentView(R.layout.fragment_add_day);
 
-        findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnAddDay).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(AddDay.this, "Workout added", Toast.LENGTH_SHORT).show();
-                saveExerciseEntry();
+                //saveExerciseEntry();
             }
         });
     }
-
+/*
     private void saveExerciseEntry() {
         EditText exerciseNameField = findViewById(R.id.exercise_name);
         EditText setsDoneField = findViewById(R.id.sets_done);
@@ -36,5 +36,5 @@ public class AddDay extends AppCompatActivity {
         int weightUsed = Integer.parseInt(weightUsedField.getText().toString());
 
         // Save the exercise entry to database
-    }
+    }*/
 }
