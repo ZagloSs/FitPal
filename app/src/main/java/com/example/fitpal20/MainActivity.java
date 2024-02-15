@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             if(item.getItemId() == R.id.homeBtn) {

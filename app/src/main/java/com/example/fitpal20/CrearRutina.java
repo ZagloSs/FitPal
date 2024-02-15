@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 public class CrearRutina extends AppCompatActivity {
 
+    public
     EditText nameRutine;
     ImageView goBack;
     String lunes;
@@ -29,14 +30,13 @@ public class CrearRutina extends AppCompatActivity {
         }
 
             System.out.println(lunes);
-
-
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.dark_gray));
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.dark_gray));
 
-        nameRutine = findViewById(R.id.editTextNombreRutina);
         submit = findViewById(R.id.btnCrearRutina);
         goBack = findViewById(R.id.goback);
+
+        nameRutine = findViewById(R.id.editTextNombreRutina);
 
         addLunes = findViewById(R.id.addLunes);
         addMartes = findViewById(R.id.addMartes);
@@ -99,11 +99,11 @@ public class CrearRutina extends AppCompatActivity {
 
 
 
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = nameRutine.getText().toString();
-
                 if(name.equals("")){
                     Toast.makeText(CrearRutina.this, "Porfavor introuduce un nombre", Toast.LENGTH_SHORT).show();
                 }else{
@@ -116,9 +116,6 @@ public class CrearRutina extends AppCompatActivity {
         });
 
 
-
-    }
-    public void addExerciseToDay(String day){
 
     }
 
