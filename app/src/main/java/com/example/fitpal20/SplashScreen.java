@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -35,6 +39,11 @@ public class SplashScreen extends AppCompatActivity {
         private String mParam2;
 
         Button logoutbtn;
+        ImageView btnEditName, btnEditEmail;
+
+        EditText editName, editEmail;
+
+        TextView name, email, acceptChangeName,acceptChangeEmail;
 
         public ProfileFragment() {
             // Required empty public constructor
@@ -75,6 +84,70 @@ public class SplashScreen extends AppCompatActivity {
             // Inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_profile, container, false);
             logoutbtn = view.findViewById(R.id.btnCloseSes);
+            btnEditName = view.findViewById(R.id.imgEditName);
+            btnEditEmail = view.findViewById(R.id.imgEditEmail);
+
+            name = view.findViewById(R.id.tv_nameProfile);
+            email= view.findViewById(R.id.tv_emailProfile);
+
+            editName = view.findViewById(R.id.editTextName);
+            acceptChangeName = view.findViewById(R.id.acceptNameChange);
+
+            editEmail = view.findViewById(R.id.editTextEmail);
+            acceptChangeEmail = view.findViewById(R.id.acceptEmailChange);
+
+            editName.setVisibility(View.GONE);
+            editEmail.setVisibility(View.GONE);
+            acceptChangeName.setVisibility(View.GONE);
+            acceptChangeEmail.setVisibility(View.GONE);
+
+            btnEditName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editName.setText(name.getText().toString());
+                    editName.setVisibility(View.VISIBLE);
+                    acceptChangeName.setVisibility(View.VISIBLE);
+                    name.setVisibility(View.GONE);
+                    btnEditName.setVisibility(View.GONE);
+                    editName.requestFocus();
+
+                }
+            });
+            acceptChangeName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editName.setVisibility(View.GONE);
+                    acceptChangeName.setVisibility(View.GONE);
+                    name.setText(editName.getText().toString());
+                    name.setVisibility(View.VISIBLE);
+                    btnEditName.setVisibility(View.VISIBLE);
+                }
+            });
+
+
+            btnEditEmail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editEmail.setText(email.getText().toString());
+                    editEmail.setVisibility(View.VISIBLE);
+                    acceptChangeEmail.setVisibility(View.VISIBLE);
+                    email.setVisibility(View.GONE);
+                    btnEditEmail.setVisibility(View.GONE);
+                    editEmail.requestFocus();
+                }
+            });
+            acceptChangeEmail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editEmail.setVisibility(View.GONE);
+                    acceptChangeEmail.setVisibility(View.GONE);
+                    email.setText(editEmail.getText().toString());
+                    email.setVisibility(View.VISIBLE);
+                    btnEditEmail.setVisibility(View.VISIBLE);
+                }
+            });
+
+
             logoutbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -13,7 +12,7 @@ public class AddDay extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_add_day);
+        setContentView(R.layout.activity_add_day);
 
         findViewById(R.id.btnAddDay).setOnClickListener(new View.OnClickListener() {
             @Override
