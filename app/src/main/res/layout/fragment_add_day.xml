@@ -5,23 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_gray"
-<<<<<<< HEAD
-    tools:context=".RutinasFragment">
-=======
     tools:context=".Rutinas">
->>>>>>> AddDay
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat"
-        android:text="Tus Rutinas:"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline20"
-        app:layout_constraintStart_toStartOf="@+id/guideline19"
-        app:layout_constraintTop_toTopOf="@+id/guideline16" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline16"
@@ -30,12 +14,26 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.15" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
     <TextView
-        android:id="@+id/tv_rutinas"
+        android:id="@+id/tv_Dia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_bold_2"
-        android:text="Rutinas"
+        android:text="Dia"
         android:textColor="@color/orange"
         android:textSize="50sp"
         android:textStyle="bold"
@@ -57,10 +55,10 @@
         app:layout_constraintGuide_percent="0.20793433" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recylcerViewRutine"
+        android:id="@+id/recylcerViewDay"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCrearRutina"
+        android:layout_height="0px"
+        app:layout_constraintBottom_toTopOf="@+id/guideline22"
         app:layout_constraintEnd_toStartOf="@+id/guideline21"
         app:layout_constraintStart_toStartOf="@+id/guideline19"
         app:layout_constraintTop_toTopOf="@+id/guideline20" />
@@ -72,23 +70,28 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:hint="  Tu peso en kg  "
+        android:textColor="@color/light_gray"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline23"
+        app:layout_constraintEnd_toStartOf="@+id/guideline21"
+        app:layout_constraintStart_toStartOf="@+id/guideline19"
+        app:layout_constraintTop_toTopOf="@+id/guideline22" />
+
     <Button
-        android:id="@+id/btnCrearRutina"
+        android:id="@+id/btnAddDay"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:fontFamily="@font/montserrat"
-        android:text="Crear nueva rutina"
+        android:text="Añadir día"
         style="@style/Widget.Material3.Button"
         android:background="@drawable/rounded_corners"
         android:textSize="25dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline21"
         app:layout_constraintStart_toStartOf="@+id/guideline19"
         app:layout_constraintTop_toTopOf="@+id/guideline23" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline23"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
 </androidx.constraintlayout.widget.ConstraintLayout>
