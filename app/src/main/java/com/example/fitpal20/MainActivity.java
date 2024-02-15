@@ -1,15 +1,12 @@
 package com.example.fitpal20;
 
 import android.os.Bundle;
-import android.text.Layout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitpal20.databinding.ActivityMainBinding;
 
@@ -39,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }else if(item.getItemId() == R.id.historyBtn) {
                 replaceFragment(new HistoryFragment());
             }else if(item.getItemId() == R.id.profileBtn) {
-                replaceFragment(new ProfileFragment());
+                replaceFragment(new SplashScreen.ProfileFragment());
             }
             return true;
         });
