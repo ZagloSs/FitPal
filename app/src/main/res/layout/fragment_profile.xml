@@ -217,4 +217,14 @@
         app:layout_constraintStart_toEndOf="@+id/editTextEmail"
         app:layout_constraintTop_toTopOf="@+id/guideline27" />
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnCloseSes"
+        app:layout_constraintEnd_toStartOf="@+id/guideline31"
+        app:layout_constraintStart_toStartOf="@+id/guideline25"
+        app:layout_constraintTop_toTopOf="@+id/guideline29"
+        app:srcCompat="@drawable/grafica" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
