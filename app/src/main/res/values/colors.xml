@@ -4,4 +4,7 @@
     <color name="orange">#FFA903</color>
     <color name="dark_gray">#2F2F2F</color>
     <color name="light_gray">#464646</color>
+    <color name="verde">#00600E</color>
+    <color name="black">#000000</color>
+
 </resources>

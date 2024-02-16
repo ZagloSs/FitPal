@@ -95,4 +95,25 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.2" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline37"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.34" />
+
+    <com.example.fitpal20.Calendario.CustomCalendarView
+        android:id="@+id/custom_calendar_view"
+        android:layout_width="411dp"
+        android:layout_height="477dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline37">
+
+    </com.example.fitpal20.Calendario.CustomCalendarView>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
