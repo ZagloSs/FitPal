@@ -11,6 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fitpal20.retrofit.APIClient;
+import com.example.fitpal20.retrofit.APIService;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 public class Register extends AppCompatActivity {
 
     Button btnRegister;
@@ -45,16 +53,30 @@ public class Register extends AppCompatActivity {
 
         //Parametros para el if
 
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
 
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
 
         //If Verificacion si esta vacio
-
+        MessageDigest finalMd = md;
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 verCorreo = etCorreo.getText().toString();
                 verPass = etPass.getText().toString();
                 verConPass = etConPass.getText().toString();
+
+
+
 
                 if(verCorreo.equals("")){
                     etCorreo.setError("Porfavor ingresa un correo electrónico");
@@ -76,9 +98,14 @@ public class Register extends AppCompatActivity {
                     etConPass.requestFocus();
    ;
                 }else{
-                    Intent intent = new Intent(Register.this, Login.class);
-                    Toast toast = Toast.makeText(Register.this, textToast, duration);
-                    toast.show();
+                    finalMd.update(salt);
+                    byte[] hashedPasswordBytes = finalMd.digest(verPass.getBytes(StandardCharsets.UTF_8));
+                    String hashPass = new String(hashedPasswordBytes, StandardCharsets.UTF_8);
+
+
+                   // Intent intent = new Intent(Register.this, Login.class);
+                    //Toast toast = Toast.makeText(Register.this, textToast, duration);
+                    //toast.show();
 
                 }
             }
