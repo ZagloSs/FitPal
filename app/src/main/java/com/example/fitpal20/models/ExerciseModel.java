@@ -1,16 +1,21 @@
 package com.example.fitpal20.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ExerciseModel {
     @SerializedName("id")
+    @Expose
     private Integer id;
 
-    @SerializedName("name")
+    @SerializedName("nombre")
+    @Expose
     private String name;
-    @SerializedName("base64")
+    @SerializedName("img")
+    @Expose
     private String base64ImgExercise;
-    @SerializedName("gmuscular")
+    @SerializedName("grupo_muscular")
+    @Expose
     private String grupo_muscular;
 
 

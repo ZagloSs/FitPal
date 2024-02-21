@@ -36,7 +36,7 @@ public class AddExerciseToDay extends AppCompatActivity {
     TextView title;
     String ttl;
     Button submit;
-    List<ExerciseModel> exerciseModels;
+    List<ExerciseModel> exerciseModels = new ArrayList<ExerciseModel>();
     SearchView searchBar;
 
 
@@ -49,7 +49,9 @@ public class AddExerciseToDay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exercise_to_day);
-
+        APIClient apiClient = APIClient.getInstance();
+        apiClient.ApiClient();
+        APIService apiService = apiClient.getApiService();
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.dark_gray));
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.dark_gray));
 
@@ -57,6 +59,8 @@ public class AddExerciseToDay extends AppCompatActivity {
         if (extras != null) {
             dayToAdd= extras.getString("day");
         }
+        setExercises(apiService);
+
         title = findViewById(R.id.addDayTitle);
         title.setText(dayToAdd);
 
@@ -64,9 +68,9 @@ public class AddExerciseToDay extends AppCompatActivity {
 
         submit = findViewById(R.id.btnAceptarAddDay);
 
-        APIService apiService = APIClient.getInstance().getApiService();
+
         RecyclerView rv = findViewById(R.id.rv_exercises);
-        setExercises(apiService);
+
 
         searchBar = findViewById(R.id.et_SearchExercise);
         searchBar.clearFocus();
@@ -142,20 +146,19 @@ public class AddExerciseToDay extends AppCompatActivity {
         if(apiService != null){
             Call<List<ExerciseModel>> callEjercicio = apiService.allEx();
             callEjercicio.enqueue(new Callback<List<ExerciseModel>>() {
+
                 @Override
                 public void onResponse(Call<List<ExerciseModel>> call, Response<List<ExerciseModel>> response) {
                     if(response != null){
-                        Log.d("fdfgdfgfg", "" + response.body());
+                        exerciseModels = response.body();
                     }
                 }
-
                 @Override
                 public void onFailure(Call<List<ExerciseModel>> call, Throwable t) {
-
+                    Log.d("Failiure", "dhf");
                 }
             });
         }
-
         for(ExerciseModel ex : exerciseModels) {
             names.add(ex.getName());
             groupsMusc.add(ex.getGrupo_muscular());
