@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
             if(item.getItemId() == R.id.homeBtn) {
                 replaceFragment(new HomeFragment());
-
             }else if(item.getItemId() == R.id.rutineBtn) {
                 replaceFragment(new RutinasFragment());
             }else if(item.getItemId() == R.id.historyBtn) {

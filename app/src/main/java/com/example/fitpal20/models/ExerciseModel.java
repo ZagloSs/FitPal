@@ -5,17 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class ExerciseModel {
     @SerializedName("id")
-    @Expose
     private Integer id;
 
     @SerializedName("nombre")
-    @Expose
     private String name;
     @SerializedName("img")
-    @Expose
     private String base64ImgExercise;
     @SerializedName("grupo_muscular")
-    @Expose
     private String grupo_muscular;
 
 

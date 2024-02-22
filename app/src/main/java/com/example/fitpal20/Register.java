@@ -5,12 +5,14 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fitpal20.models.Usuario;
 import com.example.fitpal20.retrofit.APIClient;
 import com.example.fitpal20.retrofit.APIService;
 
@@ -18,6 +20,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
 
@@ -31,6 +37,9 @@ public class Register extends AppCompatActivity {
 
     //If correo
     String verCorreo, verPass, verConPass;
+
+    APIClient apiClient;
+    APIService apiService;
 
 
     @Override
@@ -46,6 +55,11 @@ public class Register extends AppCompatActivity {
         etPass = findViewById(R.id.register_pass_editText);
         etConPass = findViewById(R.id.register_confirmPass_editText);
         tvLogin = findViewById(R.id.register_login_textView);
+
+        //Instancia de la api
+        apiClient = APIClient.getInstance();
+        apiClient.ApiClient();
+        apiService = apiClient.getApiService();
 
         //Parametros para el toast
         textToast = "Te has registrado correctamente";
@@ -98,9 +112,16 @@ public class Register extends AppCompatActivity {
                     etConPass.requestFocus();
    ;
                 }else{
-                    finalMd.update(salt);
-                    byte[] hashedPasswordBytes = finalMd.digest(verPass.getBytes(StandardCharsets.UTF_8));
-                    String hashPass = new String(hashedPasswordBytes, StandardCharsets.UTF_8);
+
+
+                    Usuario newuser = new Usuario("Prueba", 2.3f, 200f, "VayaEsperpento", 3, "Prueba", verCorreo, verPass);
+                    registrarUsuario(apiService, newuser);
+
+
+
+                    //finalMd.update(salt);
+                    //byte[] hashedPasswordBytes = finalMd.digest(verPass.getBytes(StandardCharsets.UTF_8));
+                   // String hashPass = new String(hashedPasswordBytes, StandardCharsets.UTF_8);
 
 
                    // Intent intent = new Intent(Register.this, Login.class);
@@ -119,5 +140,28 @@ public class Register extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
+    }
+
+    public void registrarUsuario(APIService apiService, Usuario user){
+        if(apiService != null){
+            Call<Usuario> callRegUser = apiService.postUser(user);
+            callRegUser.enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    if(response.isSuccessful()){
+                        Usuario user = response.body();
+                        Log.d("Response", user.getContraseña());
+                        Toast.makeText(Register.this, "Usuario Registrado", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    Toast.makeText(Register.this, "Hubo un error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

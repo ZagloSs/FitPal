@@ -5,13 +5,21 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.fitpal20.models.Usuario;
 import com.example.fitpal20.retrofit.APIClient;
 import com.example.fitpal20.retrofit.APIService;
+import com.example.fitpal20.retrofit.respuestas.RespuestaUsuario;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -23,7 +31,10 @@ public class Login extends AppCompatActivity {
     EditText etCorreo, etPass;
     Button btnLogin;
     TextView tvRegister;
-    String verCorreo, verPass;
+    String verCorreo, verPass, passToCheck;
+
+    APIService apiService;
+    APIClient apiClient = new APIClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +49,10 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.login_login_btn);
         tvRegister = findViewById(R.id.login_sinRegistro_textView);
 
+        //Instancia de la api
+        apiClient = APIClient.getInstance();
+        apiClient.ApiClient();
+        apiService = apiClient.getApiService();
 
 
         SecureRandom  random = new SecureRandom();
@@ -71,14 +86,7 @@ public class Login extends AppCompatActivity {
                     etPass.setError("Porfavor introduce una contraseña");
                     etPass.requestFocus();
                 }else{
-
-
-
-
-
-                    //Petición a la base de datos y entonces realizar el intent
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
+                    checkUser(apiService, verCorreo, verPass);
                 }
 
 
@@ -95,4 +103,38 @@ public class Login extends AppCompatActivity {
         });
 
     }
+
+    public void checkUser(APIService apiService, String user, String password){
+        if(apiService != null){
+            Call<Usuario> callCheckPass = apiService.getUserWEmail(user);
+            callCheckPass.enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    if(response.isSuccessful()){
+                        passToCheck = response.body().getContraseña();
+                        Usuario usuarioLogged = response.body();
+                        if(passToCheck.equals(password)){
+                            Intent intent = new Intent(Login.this, MainActivity.class);
+                            RespuestaUsuario.getInstance().setUsuario(usuarioLogged);
+
+                            Log.d("Usuario", RespuestaUsuario.getInstance().getUsuario().getNombre());
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            etPass.setError("Tu contraseña no es correcta");
+                            etPass.requestFocus();
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    Log.d("Failure", t.toString());
+                }
+            });
+
+
+        }
+
+    }
+
 }

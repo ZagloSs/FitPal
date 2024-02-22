@@ -1,6 +1,10 @@
 package com.example.fitpal20.retrofit;
 
+import android.util.JsonReader;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -15,16 +19,18 @@ public class APIClient {
     private static APIService apiService = null;
     public void ApiClient(){
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
-        Log.d("Aver", "sd" + apiService);
         OkHttpClient okHttpClient = okHttpBuilder.build();
-        Log.d("a", "sd" + apiService);
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         retrofitClient =  new Retrofit.Builder()
                 .baseUrl("http://192.168.56.1:8086")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build();
         apiService =   retrofitClient.create(APIService.class);
-        Log.d("Aver", "sd" + apiService);
     }
 
     //instancia del metodo de creacion de la apiClient
