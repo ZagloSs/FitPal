@@ -18,7 +18,7 @@
         android:textStyle="bold"
         android:textSize="9sp"
         android:id="@+id/events_id"
-        android:textColor="@color/orange"
+        android:textColor="@color/light_gray"
         android:layout_gravity="center"/>
 
 </LinearLayout>

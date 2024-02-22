@@ -1,7 +1,11 @@
 package com.example.fitpal20.Calendario;
 
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
 public class Events {
     String EVENT,TIME,DATE,MONTH,YEAR;
+
 
     public Events(String EVENT, String TIME, String DATE, String MONTH, String YEAR) {
         this.EVENT = EVENT;
@@ -10,7 +14,6 @@ public class Events {
         this.MONTH = MONTH;
         this.YEAR = YEAR;
     }
-
     public String getEVENT() {
         return EVENT;
     }

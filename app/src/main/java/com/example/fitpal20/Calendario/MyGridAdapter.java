@@ -56,7 +56,7 @@ public class MyGridAdapter extends ArrayAdapter {
         }
 
         if (displayMonth == currentMonth && displayYear == currentYear){
-            view.setBackgroundColor(getContext().getResources().getColor(R.color.verde));
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.orange));
         }
         else
         {
@@ -73,7 +73,7 @@ public class MyGridAdapter extends ArrayAdapter {
             if (DayNo == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH) +1
             && displayYear == eventCalendar.get(Calendar.YEAR)){
                 arrayList.add(events.get(i).getEVENT());
-                EventNumber.setText(arrayList.size()+" Events");
+                EventNumber.setText(arrayList.size()+" Asis");
             }
         }
         return view;
