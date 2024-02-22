@@ -1,5 +1,7 @@
 package com.example.fitpal20.Calendario;
 
+import android.graphics.drawable.Drawable;
+
 public class DBStructure {
     public static final String DB_NAME =    "EVENTS_DB";
     public static final int DB_VERSION = 1;

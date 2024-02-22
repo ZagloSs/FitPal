@@ -110,7 +110,9 @@ public class Register extends AppCompatActivity {
                     etPass.setError("Las contraseñas no coinciden");
                     etConPass.setError("Las contraseñas no coinciden");
                     etConPass.requestFocus();
-   ;
+                }else if(!verCorreo.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")){
+                    etCorreo.setError("No es un formato valido de contraseña");
+                    etCorreo.requestFocus();
                 }else{
 
 
