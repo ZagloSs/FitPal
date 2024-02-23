@@ -46,7 +46,7 @@ public class Login extends AppCompatActivity {
 
         etCorreo = findViewById(R.id.login_email_editText);
         etPass = findViewById(R.id.login_pass_editText);
-        btnLogin = findViewById(R.id.login_login_btn);
+        btnLogin = findViewById(R.id.guardarDatosBtn);
         tvRegister = findViewById(R.id.login_sinRegistro_textView);
 
         //Instancia de la api
@@ -54,30 +54,12 @@ public class Login extends AppCompatActivity {
         apiClient.ApiClient();
         apiService = apiClient.getApiService();
 
-
-        SecureRandom  random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-512");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        MessageDigest finalMd = md;
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 verCorreo = etCorreo.getText().toString();
                 verPass = etPass.getText().toString();
-
-                finalMd.update(salt);
-                byte[] hashedPasswordBytes = finalMd.digest(verPass.getBytes(StandardCharsets.UTF_8));
-                String hashPass = new String(hashedPasswordBytes, StandardCharsets.UTF_8);
 
                 if(verCorreo.equals("")){
                     etCorreo.setError("Porfavor, introduzca un correo");
@@ -86,7 +68,9 @@ public class Login extends AppCompatActivity {
                     etPass.setError("Porfavor introduce una contraseña");
                     etPass.requestFocus();
                 }else{
-                    checkUser(apiService, verCorreo, verPass);
+
+                    String hashPass = hashPassword(verPass);
+                    checkUser(apiService, verCorreo, hashPass);
                 }
 
 
@@ -99,6 +83,7 @@ public class Login extends AppCompatActivity {
                 Intent intent = new Intent(Login.this, Register.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
             }
         });
 
@@ -137,4 +122,22 @@ public class Login extends AppCompatActivity {
 
     }
 
+    public String hashPassword(String pass) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md.update(pass.getBytes());
+
+            byte[] resultByteArray = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : resultByteArray){
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+

@@ -67,10 +67,6 @@ public class Register extends AppCompatActivity {
 
         //Parametros para el if
 
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-512");
@@ -115,20 +111,14 @@ public class Register extends AppCompatActivity {
                     etCorreo.requestFocus();
                 }else{
 
+                    String hashPass =  hashPassword(verPass);
 
-                    Usuario newuser = new Usuario("Prueba", 2.3f, 200f, "VayaEsperpento", 3, "Prueba", verCorreo, verPass);
-                    registrarUsuario(apiService, newuser);
+                    Intent i = new Intent(Register.this, PostRegister.class);
+                    i.putExtra("correo", verCorreo);
+                    i.putExtra("contra", hashPass);
+                    startActivity(i);
+                    finish();
 
-
-
-                    //finalMd.update(salt);
-                    //byte[] hashedPasswordBytes = finalMd.digest(verPass.getBytes(StandardCharsets.UTF_8));
-                   // String hashPass = new String(hashedPasswordBytes, StandardCharsets.UTF_8);
-
-
-                   // Intent intent = new Intent(Register.this, Login.class);
-                    //Toast toast = Toast.makeText(Register.this, textToast, duration);
-                    //toast.show();
 
                 }
             }
@@ -144,26 +134,21 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    public void registrarUsuario(APIService apiService, Usuario user){
-        if(apiService != null){
-            Call<Usuario> callRegUser = apiService.postUser(user);
-            callRegUser.enqueue(new Callback<Usuario>() {
-                @Override
-                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    if(response.isSuccessful()){
-                        Usuario user = response.body();
-                        Log.d("Response", user.getContraseña());
-                        Toast.makeText(Register.this, "Usuario Registrado", Toast.LENGTH_SHORT).show();
+    public String hashPassword(String pass) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md.update(pass.getBytes());
 
+            byte[] resultByteArray = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : resultByteArray){
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
 
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Usuario> call, Throwable t) {
-                    Toast.makeText(Register.this, "Hubo un error", Toast.LENGTH_SHORT).show();
-                }
-            });
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
     }
 }

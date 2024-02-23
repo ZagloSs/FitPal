@@ -31,6 +31,7 @@ public class Lobby extends AppCompatActivity {
                 Intent intent = new Intent(Lobby.this, Login.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
             }
         });
 
@@ -40,6 +41,7 @@ public class Lobby extends AppCompatActivity {
                 Intent intent = new Intent(Lobby.this, Register.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
             }
         });
     }
