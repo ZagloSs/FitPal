@@ -2,13 +2,16 @@ package com.example.fitpal20;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -30,19 +33,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SeeRutineExercises extends AppCompatActivity {
+public class SeeRutineExercises extends Fragment {
 
-    String dayToAdd;
-    TextView title;
-    String ttl;
-    Button submit;
-    List<ExerciseModel> exerciseModels = new ArrayList<ExerciseModel>();
     SearchView searchBar;
 
 
-     ExerciseRecylcerViewAdapter adapter;
+    ExerciseRecylcerViewAdapter adapter;
 
-    ImageView goBackRutine;
 
     APIService apiService;
     APIClient apiClient = new APIClient();
@@ -50,25 +47,13 @@ public class SeeRutineExercises extends AppCompatActivity {
     ArrayList<ExerciseModel> ExerciseModels = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_add_exercise_to_day, container, false);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_exercise_to_day);
-
-
-
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.dark_gray));
-        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.dark_gray));
-
-
-        title = findViewById(R.id.addDayTitle);
-        title.setText(dayToAdd);
-
-        goBackRutine = findViewById(R.id.gobackRutine);
-
-        submit = findViewById(R.id.btnAceptarAddDay);
 
         Usuario user = RespuestaUsuario.getInstance().getUsuario();
-        RecyclerView rv = findViewById(R.id.rv_exercises);
+        RecyclerView rv = view.findViewById(R.id.rv_exercises);
 
 
         //Instancia de la api
@@ -76,24 +61,24 @@ public class SeeRutineExercises extends AppCompatActivity {
         apiClient.ApiClient();
         apiService = apiClient.getApiService();
 
-        adapter = new ExerciseRecylcerViewAdapter(this, ExerciseModels);
+        adapter = new ExerciseRecylcerViewAdapter(view.getContext(), ExerciseModels);
         rv.setAdapter(adapter);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        if(apiService != null){
+        if (apiService != null) {
             Call<List<RutinaEjercicioModel>> callEjercicio = apiService.getRutineExerciseWRid(user.getRutina_actual());
             callEjercicio.enqueue(new Callback<List<RutinaEjercicioModel>>() {
                 @Override
                 public void onResponse(Call<List<RutinaEjercicioModel>> call, Response<List<RutinaEjercicioModel>> response) {
-                    if(response != null){
+                    if (response != null) {
                         List<RutinaEjercicioModel> rExModels = response.body();
                         List<ExerciseModel> exModels = new ArrayList<>();
-                        for(RutinaEjercicioModel rutina: rExModels){
+                        for (RutinaEjercicioModel rutina : rExModels) {
                             Call<ExerciseModel> exercise = apiService.exById(rutina.getIdejercicios());
                             exercise.enqueue(new Callback<ExerciseModel>() {
                                 @Override
                                 public void onResponse(Call<ExerciseModel> call, Response<ExerciseModel> response) {
-                                    if (response.isSuccessful()){
+                                    if (response.isSuccessful()) {
                                         exModels.add(response.body());
                                         adapter.updateAdapter(exModels);
                                     }
@@ -107,9 +92,9 @@ public class SeeRutineExercises extends AppCompatActivity {
                         }
 
 
-
                     }
                 }
+
                 @Override
                 public void onFailure(Call<List<RutinaEjercicioModel>> call, Throwable t) {
                     Log.d("Failiure", "dhf");
@@ -117,9 +102,9 @@ public class SeeRutineExercises extends AppCompatActivity {
             });
         }
 
-        searchBar = findViewById(R.id.et_SearchExercise);
+        searchBar = view.findViewById(R.id.et_SearchExercise);
         searchBar.clearFocus();
-        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -132,19 +117,9 @@ public class SeeRutineExercises extends AppCompatActivity {
             }
         });
 
-
-
-        ttl = "title.getText().toString();";
-
-        goBackRutine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent( SeeRutineExercises.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        return view;
     }
+
 
 
     private void filterList(String newText){

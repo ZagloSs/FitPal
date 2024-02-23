@@ -37,9 +37,7 @@ public class MainActivity extends AppCompatActivity {
             }else if(item.getItemId() == R.id.rutineBtn) {
                 replaceFragment(new RutinasFragment());
             }else if(item.getItemId() == R.id.historyBtn) {
-                //replaceFragment(new HistoryFragment());
-                Intent i = new Intent(this, SeeRutineExercises.class);
-                startActivity(i);
+                replaceFragment(new SeeRutineExercises());
             }else if(item.getItemId() == R.id.profileBtn) {
                 replaceFragment(new ProfileFrgment.ProfileFragment());
             }
