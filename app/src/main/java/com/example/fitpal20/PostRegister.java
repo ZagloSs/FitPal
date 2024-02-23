@@ -37,6 +37,7 @@ public class PostRegister extends AppCompatActivity {
         apellido = findViewById(R.id.evDatosApellido);
         peso = findViewById(R.id.evDatosPeso);
         altura = findViewById(R.id.evDatosAltura);
+        genero = findViewById(R.id.evDatosGenero);
 
         save = findViewById(R.id.guardarDatosBtn);
 
@@ -54,14 +55,15 @@ public class PostRegister extends AppCompatActivity {
                 if(     nombre.getText().toString().isEmpty() ||
                         apellido.getText().toString().isEmpty() ||
                         peso.getText().toString().isEmpty()||
-                        altura.getText().toString().isEmpty()){
+                        altura.getText().toString().isEmpty()||
+                        genero.getText().toString().isEmpty()){
                     Toast.makeText(PostRegister.this, "Porfavor rellena todos los campos", Toast.LENGTH_SHORT).show();
                 }else{
                     String nombreTxt = nombre.getText().toString();
                     String apellidoTxt = apellido.getText().toString();
                     String pesoTxt = peso.getText().toString();
                     String alturaTxt = altura.getText().toString();
-                    String generoTxt = "generoPrueba";
+                    String generoTxt =  genero.getText().toString();
 
                     Usuario regUser = new Usuario(nombreTxt, Float.parseFloat(alturaTxt), Float.parseFloat(pesoTxt),generoTxt,0 , apellidoTxt, correo, passHashed);
                     RespuestaUsuario.getInstance().setUsuario(regUser);

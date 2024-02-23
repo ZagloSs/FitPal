@@ -26,7 +26,7 @@ import retrofit2.Response;
 public class ProfileFrgment extends AppCompatActivity {
     public static class ProfileFragment extends Fragment {
 
-        Button logoutbtn;
+        Button logoutbtn, changePassword;
         ImageView btnEditName, btnEditEmail;
 
         EditText editName, editEmail;
@@ -35,6 +35,7 @@ public class ProfileFrgment extends AppCompatActivity {
 
         APIService apiService;
         APIClient apiClient = new APIClient();
+
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +54,15 @@ public class ProfileFrgment extends AppCompatActivity {
 
             editEmail = view.findViewById(R.id.editTextEmail);
             acceptChangeEmail = view.findViewById(R.id.acceptEmailChange);
+
+            changePassword = view.findViewById(R.id.btnChangePas);
+            changePassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), ChangePassword.class);
+                    startActivity(i);
+                }
+            });
 
             Usuario actualUsuario = RespuestaUsuario.getInstance().getUsuario();
 
@@ -74,6 +84,8 @@ public class ProfileFrgment extends AppCompatActivity {
             apiClient = APIClient.getInstance();
             apiClient.ApiClient();
             apiService = apiClient.getApiService();
+
+
 
 
             btnEditName.setOnClickListener(new View.OnClickListener() {
@@ -177,8 +189,6 @@ public class ProfileFrgment extends AppCompatActivity {
 
                 }
             });
-
-
             logoutbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -192,5 +202,7 @@ public class ProfileFrgment extends AppCompatActivity {
 
 
 
+
     }
+
 }

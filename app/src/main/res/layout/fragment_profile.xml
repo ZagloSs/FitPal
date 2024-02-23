@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".ProfileFrgment"
     android:background="@color/dark_gray">
 
     <EditText
@@ -168,18 +169,6 @@
         app:layout_constraintGuide_percent="0.9" />
 
     <Button
-        android:id="@+id/btnChangePassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Cambiar contraseña"
-        style="@style/Widget.Material3.Button"
-        android:background="@drawable/rounded_corners"
-        app:layout_constraintBottom_toTopOf="@+id/guideline29"
-        app:layout_constraintEnd_toStartOf="@+id/guideline31"
-        app:layout_constraintStart_toStartOf="@+id/guideline25"
-        app:layout_constraintTop_toTopOf="@+id/guideline28" />
-
-    <Button
         android:id="@+id/btnCloseSes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -189,6 +178,17 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toStartOf="@+id/guideline31"
         app:layout_constraintStart_toStartOf="@+id/guideline25" />
+
+    <Button
+        android:id="@+id/btnChangePas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/orange"
+        android:text="Cambiar contraseña"
+        app:layout_constraintBottom_toTopOf="@+id/guideline29"
+        app:layout_constraintEnd_toStartOf="@+id/guideline31"
+        app:layout_constraintStart_toStartOf="@+id/guideline25"
+        app:layout_constraintTop_toTopOf="@+id/guideline28" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline32"

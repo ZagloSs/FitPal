@@ -28,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if(getIntent().getExtras() != null){
+            String profile = getIntent().getStringExtra("profile");
+            if(profile.equals("yes")){
+                profile();
+            }
+        }
+
+
 
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -50,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment);
         ft.commit();
+    }
+
+    public void profile(){
+        replaceFragment(new ProfileFrgment.ProfileFragment());
     }
 
 }
