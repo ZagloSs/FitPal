@@ -56,7 +56,7 @@
         android:id="@+id/recylcerViewRutine"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCrearRutina"
+        app:layout_constraintBottom_toTopOf="@+id/guideline23"
         app:layout_constraintEnd_toStartOf="@+id/guideline21"
         app:layout_constraintStart_toStartOf="@+id/guideline19"
         app:layout_constraintTop_toTopOf="@+id/guideline20" />
@@ -68,23 +68,10 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
 
-    <Button
-        android:id="@+id/btnCrearRutina"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Crear nueva rutina"
-        style="@style/Widget.Material3.Button"
-        android:background="@drawable/rounded_corners"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline21"
-        app:layout_constraintStart_toStartOf="@+id/guideline19"
-        app:layout_constraintTop_toTopOf="@+id/guideline23" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.89" />
 </androidx.constraintlayout.widget.ConstraintLayout>

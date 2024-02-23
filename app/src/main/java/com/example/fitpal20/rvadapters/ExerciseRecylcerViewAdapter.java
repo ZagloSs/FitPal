@@ -21,6 +21,7 @@ import com.example.fitpal20.models.ExerciseModel;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExerciseRecylcerViewAdapter extends RecyclerView.Adapter<ExerciseRecylcerViewAdapter.MyViewHolder>{
 
@@ -33,6 +34,13 @@ public class ExerciseRecylcerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     public ExerciseRecylcerViewAdapter(Context context, ArrayList<ExerciseModel> exerciseModels) {
         this.context = context;
         this.ExerciseModels = exerciseModels;
+    }
+
+    public void updateAdapter(List<ExerciseModel> models){
+        ExerciseModels.clear();
+        ExerciseModels.addAll(models);
+        notifyDataSetChanged();
+
     }
 
     public void setFilteredList(ArrayList<ExerciseModel> filteredList){
@@ -55,20 +63,7 @@ public class ExerciseRecylcerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         holder.ivEx.setImageBitmap(transformImage(ExerciseModels.get(position).getBase64ImgExercise()));
 
         final int pos = position;
-        holder.exercises.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            if(!posicionesMarcadas.contains(pos)){
-                posicionesMarcadas.add(pos);
-                holder.exercises.getBackground().setTint(Color.parseColor("#FFA903"));
-                notifyDataSetChanged();
-            }else if(posicionesMarcadas.contains(pos)){
-                posicionesMarcadas.remove(posicionesMarcadas.indexOf(pos));
-                holder.exercises.getBackground().setTint(Color.parseColor("#464646"));
-                notifyDataSetChanged();
-            }
-            }
-        });
+
     }
 
     @Override
@@ -78,13 +73,11 @@ public class ExerciseRecylcerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView tvName;
-        CardView exercises;
         ImageView ivEx;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_exercisename);
             ivEx = itemView.findViewById(R.id.iv_exerciseImage);
-            exercises = itemView.findViewById(R.id.cardViewExercise);
 
 
         }

@@ -7,11 +7,11 @@ public class ExerciseModel {
     @SerializedName("id")
     private Integer id;
 
-    @SerializedName("nombre")
+    @SerializedName("name")
     private String name;
-    @SerializedName("img")
+    @SerializedName("image64")
     private String base64ImgExercise;
-    @SerializedName("grupo_muscular")
+    @SerializedName("gmuscular")
     private String grupo_muscular;
 
 

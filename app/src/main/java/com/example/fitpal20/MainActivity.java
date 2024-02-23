@@ -1,5 +1,6 @@
 package com.example.fitpal20;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
             }else if(item.getItemId() == R.id.rutineBtn) {
                 replaceFragment(new RutinasFragment());
             }else if(item.getItemId() == R.id.historyBtn) {
-                replaceFragment(new HistoryFragment());
+                //replaceFragment(new HistoryFragment());
+                Intent i = new Intent(this, SeeRutineExercises.class);
+                startActivity(i);
             }else if(item.getItemId() == R.id.profileBtn) {
-                replaceFragment(new SplashScreen.ProfileFragment());
+                replaceFragment(new ProfileFrgment.ProfileFragment());
             }
             return true;
         });

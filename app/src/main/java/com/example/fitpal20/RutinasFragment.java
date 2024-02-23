@@ -7,66 +7,33 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.fitpal20.models.RutineModel;
+import com.example.fitpal20.retrofit.APIClient;
+import com.example.fitpal20.retrofit.APIService;
 import com.example.fitpal20.rvadapters.RutineRecylerViewAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RutinasFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RutinasFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    Button btnCrearRutina;
 
     ArrayList<RutineModel> RutineModels = new ArrayList<>();
     RutineRecylerViewAdapter adapter;
-    public RutinasFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeRutinas.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RutinasFragment newInstance(String param1, String param2) {
-        RutinasFragment fragment = new RutinasFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    APIService apiService;
+    APIClient apiClient = new APIClient();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,34 +41,53 @@ public class RutinasFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rutinas, container, false);
         RecyclerView rv =view.findViewById(R.id.recylcerViewRutine);
-        setRutines();
 
+
+
+        //Instancia de la api
+        apiClient = APIClient.getInstance();
+        apiClient.ApiClient();
+        apiService = apiClient.getApiService();
 
         adapter = new RutineRecylerViewAdapter(view.getContext(), RutineModels);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        btnCrearRutina = view.findViewById(R.id.btnCrearRutina);
 
-        btnCrearRutina.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CrearRutina.class);
-                startActivity(intent);
-            }
-        });
+        if (apiService != null) {
+            Call<List<RutineModel>> callAllRutines = apiService.allRutines();
+            callAllRutines.enqueue(new Callback<List<RutineModel>>() {
+                @Override
+                public void onResponse(Call<List<RutineModel>> call, Response<List<RutineModel>> response) {
+                    if(response.isSuccessful()){
+                        ArrayList<String> rNames = new ArrayList<>();
+                        List<RutineModel> rutines = response.body();
+                        for(RutineModel rutine: rutines){
+                            rNames.add(rutine.getRutineName());
+                            Log.d("Name", rutine.getRutineName());
+                        }
+                        ArrayList<RutineModel> RM = new ArrayList<>();
+                        for(int i = 0;  i < rNames.size(); i++){
+                            RM.add(new RutineModel(rNames.get(i)));
+                        }
+                        adapter.updateAdapter(RM);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<RutineModel>> call, Throwable t) {
+
+                }
+            });
+        }
 
 
 
         return view;
     }
 
-    private void setRutines(){
-        String[] rNames = {"Carga Alta", "PushPullLegs", "Sam's"};
-        String[] rDays = {"L,M,X", "J,V,S", "L,J,D"};
+    private void setRutines(APIService apiService){
 
-        for(int i = 0;  i < rNames.length; i++){
-            RutineModels.add(new RutineModel(rNames[i], rDays[i]));
-        }
     }
 }

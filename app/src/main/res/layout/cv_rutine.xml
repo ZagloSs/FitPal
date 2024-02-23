@@ -60,15 +60,6 @@
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
-                <TextView
-                    android:id="@+id/tv_rutineDayList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20px"
-                    android:fontFamily="@font/montserrat"
-                    android:text="TextView"
-                    android:textColor="@color/white" />
-
             </LinearLayout>
 
             <LinearLayout

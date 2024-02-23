@@ -95,5 +95,39 @@ public class Usuario implements Serializable {
     }
 
 
+    public void setRutina_actual(int rutina_actual) {
+        this.rutina_actual = rutina_actual;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setAltura(float altura) {
+        this.altura = altura;
+    }
+
+    public void setPeso(float peso) {
+        this.peso = peso;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
 }

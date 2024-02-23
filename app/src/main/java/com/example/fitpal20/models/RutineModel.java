@@ -1,19 +1,24 @@
 package com.example.fitpal20.models;
 
-public class RutineModel {
-    public String rutineName;
-    public String days;
+import com.google.gson.annotations.SerializedName;
 
-    public RutineModel(String rutineName, String days){
+import java.io.Serializable;
+
+public class RutineModel implements Serializable {
+
+
+    @SerializedName("id")
+    public int id;
+
+    @SerializedName("name")
+    public String rutineName;
+
+    public RutineModel(String rutineName){
         this.rutineName = rutineName;
-        this.days = days;
     }
 
     public String getRutineName() {
         return rutineName;
     }
 
-    public String getDays() {
-        return days;
-    }
 }

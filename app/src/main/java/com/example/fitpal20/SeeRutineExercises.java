@@ -10,19 +10,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fitpal20.models.ExerciseModel;
+import com.example.fitpal20.models.RutinaEjercicioModel;
+import com.example.fitpal20.models.Usuario;
 import com.example.fitpal20.retrofit.APIClient;
 import com.example.fitpal20.retrofit.APIService;
+import com.example.fitpal20.retrofit.respuestas.RespuestaUsuario;
+import com.example.fitpal20.retrofit.respuestas.RutineExercisesSelected;
 import com.example.fitpal20.rvadapters.ExerciseRecylcerViewAdapter;
-import com.example.fitpal20.rvadapters.HistoryRecyclerViewAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddExerciseToDay extends AppCompatActivity {
+public class SeeRutineExercises extends AppCompatActivity {
 
     String dayToAdd;
     TextView title;
@@ -41,25 +41,24 @@ public class AddExerciseToDay extends AppCompatActivity {
 
 
      ExerciseRecylcerViewAdapter adapter;
-     ArrayList<ExerciseModel> ExerciseModels = new ArrayList<>();
 
     ImageView goBackRutine;
+
+    APIService apiService;
+    APIClient apiClient = new APIClient();
+
+    ArrayList<ExerciseModel> ExerciseModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exercise_to_day);
-        APIClient apiClient = APIClient.getInstance();
-        apiClient.ApiClient();
-        APIService apiService = apiClient.getApiService();
+
+
+
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.dark_gray));
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.dark_gray));
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            dayToAdd= extras.getString("day");
-        }
-        setExercises(apiService);
 
         title = findViewById(R.id.addDayTitle);
         title.setText(dayToAdd);
@@ -68,9 +67,55 @@ public class AddExerciseToDay extends AppCompatActivity {
 
         submit = findViewById(R.id.btnAceptarAddDay);
 
-
+        Usuario user = RespuestaUsuario.getInstance().getUsuario();
         RecyclerView rv = findViewById(R.id.rv_exercises);
 
+
+        //Instancia de la api
+        apiClient = APIClient.getInstance();
+        apiClient.ApiClient();
+        apiService = apiClient.getApiService();
+
+        adapter = new ExerciseRecylcerViewAdapter(this, ExerciseModels);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
+        if(apiService != null){
+            Call<List<RutinaEjercicioModel>> callEjercicio = apiService.getRutineExerciseWRid(user.getRutina_actual());
+            callEjercicio.enqueue(new Callback<List<RutinaEjercicioModel>>() {
+                @Override
+                public void onResponse(Call<List<RutinaEjercicioModel>> call, Response<List<RutinaEjercicioModel>> response) {
+                    if(response != null){
+                        List<RutinaEjercicioModel> rExModels = response.body();
+                        List<ExerciseModel> exModels = new ArrayList<>();
+                        for(RutinaEjercicioModel rutina: rExModels){
+                            Call<ExerciseModel> exercise = apiService.exById(rutina.getIdejercicios());
+                            exercise.enqueue(new Callback<ExerciseModel>() {
+                                @Override
+                                public void onResponse(Call<ExerciseModel> call, Response<ExerciseModel> response) {
+                                    if (response.isSuccessful()){
+                                        exModels.add(response.body());
+                                        adapter.updateAdapter(exModels);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ExerciseModel> call, Throwable t) {
+
+                                }
+                            });
+                        }
+
+
+
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<RutinaEjercicioModel>> call, Throwable t) {
+                    Log.d("Failiure", "dhf");
+                }
+            });
+        }
 
         searchBar = findViewById(R.id.et_SearchExercise);
         searchBar.clearFocus();
@@ -87,90 +132,20 @@ public class AddExerciseToDay extends AppCompatActivity {
             }
         });
 
-        adapter = new ExerciseRecylcerViewAdapter(this, ExerciseModels);
-        rv.setAdapter(adapter);
-        rv.setLayoutManager(new LinearLayoutManager(this));
 
-        ttl = title.getText().toString();
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddExerciseToDay.this, CrearRutina.class);
-                switch(ttl) {
-                    case "Lunes":
-                        intent.putExtra("L", "PressBanca");
-                        break;
-                    case "Martes":
-                        intent.putExtra("M", "getEjercicios()");
-                        break;
-                    case "Miercoles":
-                        intent.putExtra("X", "getEjercicios()");
-                        break;
-                    case "Jueves":
-                        intent.putExtra("J", "getEjercicios()");
-                    case "Viernes":
-                        intent.putExtra("V", "getEjercicios()");
-                        break;
-                    case "Sabado":
-                        intent.putExtra("S", "getEjercicios()");
-                        break;
-                    case "Domingo":
-                        intent.putExtra("D", "getEjercicios()");
-                        break;
-                    default:
-                        intent.putExtra("n", "null");
 
-                }
-                startActivity(intent);
-                finish();
-
-            }
-        });
-
+        ttl = "title.getText().toString();";
 
         goBackRutine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( AddExerciseToDay.this, CrearRutina.class);
+                Intent intent = new Intent( SeeRutineExercises.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
     }
 
-    public void setExercises(APIService apiService){
-        ArrayList<String> names = new ArrayList<>();
-        ArrayList<String> groupsMusc = new ArrayList<>();
-        ArrayList<String> base64 = new ArrayList<>();
-
-        if(apiService != null){
-            Call<List<ExerciseModel>> callEjercicio = apiService.allEx();
-            callEjercicio.enqueue(new Callback<List<ExerciseModel>>() {
-
-                @Override
-                public void onResponse(Call<List<ExerciseModel>> call, Response<List<ExerciseModel>> response) {
-                    if(response != null){
-                        exerciseModels = response.body();
-                    }
-                }
-                @Override
-                public void onFailure(Call<List<ExerciseModel>> call, Throwable t) {
-                    Log.d("Failiure", "dhf");
-                }
-            });
-        }
-        for(ExerciseModel ex : exerciseModels) {
-            names.add(ex.getName());
-            groupsMusc.add(ex.getGrupo_muscular());
-            base64.add(ex.getBase64ImgExercise());
-        }
-
-        for (int i = 0; i < names.size(); i++){
-            ExerciseModels.add(new ExerciseModel(i, names.get(i), groupsMusc.get(i),base64.get(i)));
-        }
-
-
-    }
 
     private void filterList(String newText){
         ArrayList<ExerciseModel> filteredList = new ArrayList<>();
@@ -179,9 +154,7 @@ public class AddExerciseToDay extends AppCompatActivity {
             if(ex.getName().toLowerCase().contains(newText.toLowerCase())){
                 filteredList.add(ex);
             }
-            if(filteredList.isEmpty()){
-                Toast.makeText(this, "No exercise found with this name", Toast.LENGTH_SHORT).show();
-            }else{
+            if(!filteredList.isEmpty()){
                 adapter.setFilteredList(filteredList);
             }
         }
