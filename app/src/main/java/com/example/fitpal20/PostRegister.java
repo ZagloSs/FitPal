@@ -100,6 +100,7 @@ public class PostRegister extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Usuario> call, Throwable t) {
                     Toast.makeText(PostRegister.this, "Hubo un error", Toast.LENGTH_SHORT).show();
+                    Log.d("error", t.toString());
                 }
             });
         }
