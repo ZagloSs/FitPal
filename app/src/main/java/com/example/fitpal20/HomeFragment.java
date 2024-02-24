@@ -16,6 +16,7 @@ import com.example.fitpal20.models.Usuario;
 import com.example.fitpal20.retrofit.APIClient;
 import com.example.fitpal20.retrofit.APIService;
 import com.example.fitpal20.retrofit.respuestas.RespuestaUsuario;
+import com.example.fitpal20.retrofit.respuestas.ResupuestaDiasAsist;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +26,8 @@ public class HomeFragment extends Fragment {
     CustomCalendarView customCalendarView;
 
     private TextView pesoTxt;
+
+    private TextView diasTxt;
 
     APIClient apiClient;
     APIService apiService;
@@ -37,23 +40,18 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         //Instancia de la api
-        apiClient = APIClient.getInstance();
-        apiClient.ApiClient();
-        apiService = apiClient.getApiService();
+
+
 
         pesoTxt = view.findViewById(R.id.tv_peso);
+        diasTxt = view.findViewById(R.id.tv_dias);
         pesoTxt.setText(RespuestaUsuario.getInstance().getUsuario().getPeso() + "KG");
+        diasTxt.setText(String.valueOf(ResupuestaDiasAsist.getInstance().getDiasAsist()));
 
 
         customCalendarView = view.findViewById(R.id.custom_calendar_view);
 
         // Inflate the layout for this fragment
         return view;
-
-
     }
-
-
-
-
 }

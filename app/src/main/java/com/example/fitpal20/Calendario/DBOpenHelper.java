@@ -5,11 +5,22 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.fitpal20.retrofit.APIClient;
+import com.example.fitpal20.retrofit.APIService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DBOpenHelper extends SQLiteOpenHelper  {
 
+    APIService apiService;
+    APIClient apiClient = new APIClient();
     private final static String CREATE_EVENTS_TABLE = "create table "+DBStructure.EVENT_TABLE_NAME+"(ID INTEGER PRIMARY KEY AUTOINCREMENT,"
             +DBStructure.EVENT+" TEXT, "+DBStructure.TIME+" TEXT, "+DBStructure.DATE+" TEXT, "+DBStructure.MONTH+" TEXT,"
             +DBStructure.YEAR+" TEXT)";
@@ -31,15 +42,7 @@ public class DBOpenHelper extends SQLiteOpenHelper  {
         onCreate(db);
     }
 
-    public void SaveEvent(String event, String time, String date, String month, String year, SQLiteDatabase database){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DBStructure.EVENT,event);
-        contentValues.put(DBStructure.TIME,time);
-        contentValues.put(DBStructure.DATE,date);
-        contentValues.put(DBStructure.MONTH,month);
-        contentValues.put(DBStructure.YEAR,year);
-        database.insert(DBStructure.EVENT_TABLE_NAME,null,contentValues);
-    }
+
 
     public Cursor ReadEvents(String date, SQLiteDatabase database){
         String [] Projections = {DBStructure.EVENT,DBStructure.TIME,DBStructure.DATE,DBStructure.MONTH,DBStructure.YEAR};

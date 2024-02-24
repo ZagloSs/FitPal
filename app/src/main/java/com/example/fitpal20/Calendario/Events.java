@@ -3,8 +3,28 @@ package com.example.fitpal20.Calendario;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-public class Events {
-    String EVENT,TIME,DATE,MONTH,YEAR;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class Events implements Serializable {
+
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("nombre")
+    private String EVENT;
+
+    @SerializedName("time")
+    private String TIME;
+    @SerializedName("date")
+    private String DATE;
+
+    @SerializedName("month")
+    private String MONTH;
+
+    @SerializedName("year")
+    private String YEAR;
 
 
     public Events(String EVENT, String TIME, String DATE, String MONTH, String YEAR) {
@@ -14,6 +34,15 @@ public class Events {
         this.MONTH = MONTH;
         this.YEAR = YEAR;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getEVENT() {
         return EVENT;
     }

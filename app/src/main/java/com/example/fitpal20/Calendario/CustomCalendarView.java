@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,7 +25,13 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fitpal20.HomeFragment;
 import com.example.fitpal20.R;
+import com.example.fitpal20.models.Usuarios_dias;
+import com.example.fitpal20.retrofit.APIClient;
+import com.example.fitpal20.retrofit.APIService;
+import com.example.fitpal20.retrofit.respuestas.RespuestaUsuario;
+import com.example.fitpal20.retrofit.respuestas.ResupuestaDiasAsist;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +40,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CustomCalendarView extends LinearLayout {
     ImageButton NextButton, PreviousButton;
@@ -51,7 +62,12 @@ public class CustomCalendarView extends LinearLayout {
     List<Date> dates = new ArrayList<>();
     List<Events> eventsList = new ArrayList<>();
 
+
+    APIService apiService;
+    APIClient apiClient = new APIClient();
     DBOpenHelper dbOpenHelper;
+
+    int contadorDias = 0;
 
     public CustomCalendarView(Context context) {
         super(context);
@@ -60,8 +76,51 @@ public class CustomCalendarView extends LinearLayout {
     public CustomCalendarView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        IntializeLayout();
+
+        apiClient = APIClient.getInstance();
+        apiClient.ApiClient();
+        apiService = apiClient.getApiService();
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.calendar_layout, this);
+        NextButton = view.findViewById(R.id.nextBtn);
+        PreviousButton = view.findViewById(R.id.previousBtn);
+        CurrentDate = view.findViewById(R.id.current_Date);
+        gridView = view.findViewById(R.id.gridview);
         SetUpCalendar();
+        if(apiService != null){
+            Call<List<Usuarios_dias>> usersDays = apiService.getDiasByUserId(RespuestaUsuario.getInstance().getUsuario().getId());
+            usersDays.enqueue(new Callback<List<Usuarios_dias>>() {
+                @Override
+                public void onResponse(Call<List<Usuarios_dias>> call, Response<List<Usuarios_dias>> response) {
+                    if(response.isSuccessful()){
+                        List<Usuarios_dias> usuarios_dias = response.body();
+                        for(Usuarios_dias dias: usuarios_dias){
+                            Call<Events> diasUser = apiService.getDaysById(dias.getIdDia());
+                            diasUser.enqueue(new Callback<Events>() {
+                                @Override
+                                public void onResponse(Call<Events> call, Response<Events> response) {
+                                    eventsList.add(response.body());
+                                    contadorDias++;
+                                    ResupuestaDiasAsist.getInstance().setDiasAsist(contadorDias);
+                                    SetUpCalendar();
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<Events> call, Throwable t) {
+                                    SetUpCalendar();
+                                }
+                            });
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<Usuarios_dias>> call, Throwable t) {
+                    SetUpCalendar();
+                }
+            });
+        }
 
         PreviousButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -182,23 +241,42 @@ public class CustomCalendarView extends LinearLayout {
     }
 
     private void SaveEvent(String event, String time, String date, String month, String year){
+        Events newEvent = new Events(event, time, date, month, year);
 
-        dbOpenHelper = new DBOpenHelper(context);
-        SQLiteDatabase database = dbOpenHelper.getWritableDatabase();
-        dbOpenHelper.SaveEvent(event,time,date,month,year,database);
-        dbOpenHelper.close();
-        Toast.makeText(context, "Dia Guardado", Toast.LENGTH_LONG).show();
+        //Instancia de la api
+        apiClient = APIClient.getInstance();
+        apiClient.ApiClient();
+        apiService = apiClient.getApiService();
+
+        if(apiService != null){
+            Call<Events> saveEvent = apiService.postDia(newEvent);
+            saveEvent.enqueue(new Callback<Events>() {
+                @Override
+                public void onResponse(Call<Events> call, Response<Events> response) {
+                    Log.d("Lo gualdo", "si");
+                    Usuarios_dias usuarios_dias = new Usuarios_dias(response.body().getId(), RespuestaUsuario.getInstance().getUsuario().getId());
+                    Call<Usuarios_dias> addDayToUser = apiService.postUsuarioDia(usuarios_dias);
+                    addDayToUser.enqueue(new Callback<Usuarios_dias>() {
+                        @Override
+                        public void onResponse(Call<Usuarios_dias> call, Response<Usuarios_dias> response) {
+                            Toast.makeText(getContext(), "Dia añadido al usuario", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Usuarios_dias> call, Throwable t) {
+
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onFailure(Call<Events> call, Throwable t) {
+                    Log.d("Lo gualdo", "no");
+                }
+            });
+        }
     }
-
-    private void IntializeLayout(){
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.calendar_layout, this);
-        NextButton = view.findViewById(R.id.nextBtn);
-        PreviousButton = view.findViewById(R.id.previousBtn);
-        CurrentDate = view.findViewById(R.id.current_Date);
-        gridView = view.findViewById(R.id.gridview);
-    }
-
     private void SetUpCalendar(){
         String currentDate = dateFormat.format(calendar.getTime());
         CurrentDate.setText(currentDate);
@@ -207,7 +285,6 @@ public class CustomCalendarView extends LinearLayout {
         monthCalendar.set(Calendar.DAY_OF_MONTH,1);
         int FirstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK)-1;
         monthCalendar.add(Calendar.DAY_OF_MONTH, -FirstDayOfMonth);
-        CollectEventsPerMonth(monthFormat.format(calendar.getTime()),yearFormat.format(calendar.getTime()));
 
         while (dates.size() < MAX_CALENDAR_DAYS){
             dates.add(monthCalendar.getTime());
@@ -217,23 +294,4 @@ public class CustomCalendarView extends LinearLayout {
         gridView.setAdapter(myGridAdapter);
     }
 
-
-    private void CollectEventsPerMonth(String Month, String year){
-        eventsList.clear();
-        dbOpenHelper = new DBOpenHelper(context);
-        SQLiteDatabase database = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = dbOpenHelper.ReadEventsperMonth(Month,year,database);
-        while(cursor.moveToNext()){
-            @SuppressLint("Range") String event = cursor.getString(cursor.getColumnIndex(DBStructure.EVENT));
-            @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex(DBStructure.TIME));
-            @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex(DBStructure.DATE));
-            @SuppressLint("Range") String month = cursor.getString(cursor.getColumnIndex(DBStructure.MONTH));
-            @SuppressLint("Range") String Year = cursor.getString(cursor.getColumnIndex(DBStructure.YEAR));
-
-            Events events = new Events(event,time,date,month,Year);
-            eventsList.add(events);
-        }
-        cursor.close();
-        dbOpenHelper.close();
-    }
 }
