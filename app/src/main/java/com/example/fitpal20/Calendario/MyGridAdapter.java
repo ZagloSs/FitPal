@@ -1,5 +1,6 @@
 package com.example.fitpal20.Calendario;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ public class MyGridAdapter extends ArrayAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    @SuppressLint("Range")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -56,7 +58,7 @@ public class MyGridAdapter extends ArrayAdapter {
         }
 
         if (displayMonth == currentMonth && displayYear == currentYear){
-            view.setBackgroundColor(getContext().getResources().getColor(R.color.orange));
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.dark_gray));
         }
         else
         {
@@ -74,6 +76,9 @@ public class MyGridAdapter extends ArrayAdapter {
             && displayYear == eventCalendar.get(Calendar.YEAR)){
                 arrayList.add(events.get(i).getEVENT());
                 EventNumber.setText(arrayList.size()+" Asis");
+                Day_Number.setBackgroundColor(Color.parseColor("#FFA903"));
+                EventNumber.setBackgroundColor(Color.parseColor("#FFA903"));
+
             }
         }
         return view;
